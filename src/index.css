@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-color: rgb(24, 22, 22);
+    color: white;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  
+  .scrollbar-hidden {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .scrollbar-thumb-gray-500::-webkit-scrollbar-thumb {
+    background-color: #2b3037;
+  }
+  
+
+  
