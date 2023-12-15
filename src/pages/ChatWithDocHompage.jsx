@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useInput } from "../context/InputContext";
 import FeatureBar from "../components/FeatureBar";
 
-const SummarizationHomepage = () => {
+const ChatWithDocHomepage = () => {
   const navigate = useNavigate();
   const { inputValue, setInputValue } = useInput();
 
@@ -78,4 +78,4 @@ const SummarizationHomepage = () => {
   );
 };
 
-export default SummarizationHomepage;
+export default ChatWithDocHomepage;

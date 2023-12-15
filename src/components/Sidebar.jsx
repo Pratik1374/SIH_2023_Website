@@ -88,21 +88,8 @@ const Sidebar = () => {
   };
 
   const handleNewChatClick = () => {
-    //get new chat id from api
-    const newChatId = chats.length + 1;
-
-    // Create a new chat object with dummy field and auto-generated ID
-    const newChat = {
-      id: newChatId,
-      title: `New Chat ${newChatId}`,
-      chat_type: "Type D", // Dummy field, replace it with your actual field
-    };
-
-    // Update the chats state by adding the new chat at the beginning
-    setChats((prevChats) => [newChat, ...prevChats]);
-
-    // Programmatically navigate to the new chat page
-    navigate(`/chatbot/${newChatId}`);
+    
+    navigate('/chatbot');
 
     // Close the sidebar on mobile if it's open
     isTabletMid && setOpen(false);
@@ -129,7 +116,7 @@ const Sidebar = () => {
           <img src={logo} alt="" />
         </div>
         <div className="my-4 flex items-center max-w-[16rem]  w-[16rem] justify-center ">
-          <div className="flex items-center max-w-[12rem] w-[12rem] justify-around px-2 py-2 bg-violet-600 hover:opacity-90 rounded-full cursor-pointer">
+          <div className="flex items-center max-w-[12rem] w-[12rem] justify-around px-2 py-2 bg-purple-600 hover:opacity-90 rounded-full cursor-pointer">
             <FaPlus />
             <div
               className="flex justify-center items-center mr-[30px]"
@@ -148,7 +135,7 @@ const Sidebar = () => {
             >
               <div
                 className={`flex rounded-md mx-2 p-2 max-h-10 h-10 my-1 cursor-pointer hover:bg-gray-600 ${
-                  window.location.pathname === `/chatbot/${chat.id}` ? 'bg-violet-500' : "bg-gray-800"
+                  window.location.pathname === `/chatbot/${chat.id}` ? 'bg-purple-600' : "bg-gray-800"
                 }`}
                 onClick={() => handleChatClick(chat.id)}
               >
