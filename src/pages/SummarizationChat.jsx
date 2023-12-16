@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
-import { MdCloudUpload, MdSend } from "react-icons/md";
+import { MdSend } from "react-icons/md";
+import { TbFileUpload } from "react-icons/tb";
 import { useInput } from "../context/InputContext";
 import FeatureBar from "../components/FeatureBar";
 import { BsRobot } from "react-icons/bs";
@@ -9,29 +10,42 @@ import { CgProfile } from "react-icons/cg";
 const SummarizationChat = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [loadingAnswer, setLoadingAnswer] = useState(false);
-  const [inputQuestion, setInputQuestion] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     // Dummy data for chat history
     const dummyChatHistory = [
-      { question: "What is your name?", answer: "I am a chatbot." },
       {
-        question: "How does the weather look today?",
-        answer:
+        file_name: "first file.pdf",
+        summary:
+          "I don't have that information.Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque debitis, et earum velit dolorem quod modi quibusdam tempora fugiat voluptatum nam! Quo nobis iure sapiente animi sed porro cumque dolore.Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque debitis, et earum velit dolorem quod modi quibusdam tempora fugiat voluptatum nam! Quo nobis iure sapiente animi sed porro cumque dolore.",
+      },
+      {
+        file_name: "second file.pdf",
+        summary:
           "I don't have that information.Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque debitis, et earum velit dolorem quod modi quibusdam tempora fugiat voluptatum nam! Quo nobis iure sapiente animi sed porro cumque dolore.Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque debitis, et earum velit dolorem quod modi quibusdam tempora fugiat voluptatum nam! Quo nobis iure sapiente animi sed porro cumque dolore.",
       },
     ];
     setChatHistory(dummyChatHistory);
   }, []);
 
-  const handleSendClick = async () => {
+  const fetchAnswerFromAPI = async (file) => {
+    // Replace this with your actual API call to get the answer
+    // For simplicity, returning a dummy answer here
+
+    return "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis voluptatum, autem, tenetur repellendus illo officiis dignissimos similique dolorem, nostrum reiciendis quam laborum eius placeat pariatur officia atque beatae exercitationem fugiat.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis voluptatum, autem, tenetur repellendus illo officiis dignissimos similique dolorem, nostrum reiciendis quam laborum eius placeat pariatur officia atque beatae exercitationem fugiat";
+  };
+
+  const handleFileChange = async (event) => {
     try {
+      const file = event.target.files[0];
+      setSelectedFile(file);
+      
       // Set loading state
       setLoadingAnswer(true);
 
       // Simulate fetching the answer (replace this with your actual logic)
-      const answer = await fetchAnswerFromAPI(inputQuestion);
+      const answer = await fetchAnswerFromAPI(file);
       // Update currentAnswer with the actual answer
 
       await new Promise((resolve) => {
@@ -41,12 +55,11 @@ const SummarizationChat = () => {
         }, 3000);
       });
 
-      setInputQuestion("");
 
-      if (inputQuestion) {
+      if (file) {
         setChatHistory((prevChats) => [
           ...prevChats,
-          { question: inputQuestion, answer: answer },
+          { file_name: file.name, summary: answer },
         ]);
       }
     } catch (error) {
@@ -55,28 +68,7 @@ const SummarizationChat = () => {
       // Reset loading state
       setLoadingAnswer(false);
       // Clear the inputQuestion state
-      setInputQuestion("");
     }
-  };
-
-  const handleTextareaKeyDown = (e) => {
-    // Check if the Enter key is pressed (key code 13) and Shift key is not pressed
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // Prevents the default behavior of adding a new line
-      handleSendClick(); // Trigger the send click event
-    }
-  };
-
-  const fetchAnswerFromAPI = async (question) => {
-    // Replace this with your actual API call to get the answer
-    // For simplicity, returning a dummy answer here
-    return "I don't know the answer yet.";
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    // Perform any additional logic with the selected file if needed
   };
 
   const handleIconClick = () => {
@@ -102,7 +94,7 @@ const SummarizationChat = () => {
                   </div>
                   <h2 className="ml-[10px] font-bold">You</h2>
                 </div>
-                <p className="ml-[40px]">{chat.question}</p>
+                <p className="ml-[40px]">Filename : {chat.file_name}</p>
               </div>
               <div className="flex w-[80vw] lg:w-[60vw] flex-col mt-1 mb-8 bg-[#080808] p-2 rounded-md shadow-md shadow-gray-800">
                 <div className="flex">
@@ -111,7 +103,7 @@ const SummarizationChat = () => {
                   </div>
                   <h2 className="ml-[10px] font-bold">Chatbot</h2>
                 </div>
-                <p className="ml-[40px] py-1">{chat.answer}</p>
+                <p className="ml-[40px] py-1">{chat.summary}</p>
               </div>
             </div>
           ))}
@@ -125,7 +117,7 @@ const SummarizationChat = () => {
                   </div>
                   <h2 className="ml-[10px] font-bold">You</h2>
                 </div>
-                <p className="ml-[40px]">{inputQuestion}</p>
+                <p className="ml-[40px]">Filename : {selectedFile.name}</p>
               </div>
               <div className="flex w-[80vw] lg:w-[60vw] flex-col mt-1 mb-8 bg-[#080808] p-2 rounded-md shadow-md shadow-gray-800">
                 <div className="flex">
@@ -141,14 +133,14 @@ const SummarizationChat = () => {
             <></>
           )}
 
-          <div className="absolute bottom-0 my-2 left-0 lg:left-[16rem] right-0 flex items-center justify-center p-3 lg:-ml-11">
+          <div className="absolute bottom-0 mt-2 left-0 lg:left-[16rem] right-0 flex items-center justify-center p-3 lg:-ml-11">
             {loadingAnswer ? (
               <>
                 <div
-                  className="cursor-pointer pr-2 lg:-ml-10 opacity-40"
+                  className="cursor-not-allowed pr-2 lg:-ml-10 opacity-40 flex flex-col justify-center items-center"
                   onClick={handleIconClick}
                 >
-                  <MdCloudUpload size={30} color="violet" />
+                  <TbFileUpload size={50} color="violet" />
                 </div>
 
                 {/* Hidden File Input */}
@@ -160,17 +152,17 @@ const SummarizationChat = () => {
                   style={{ display: "none" }}
                   onChange={handleFileChange}
                 />
-
-                {/* Display the selected file name */}
-                {selectedFile && <p>Selected File: {selectedFile.name}</p>}
               </>
             ) : (
               <>
                 <div
-                  className="cursor-pointer pr-2 lg:-ml-10"
+                  className="cursor-pointer pr-2 lg:-ml-10 flex flex-col justify-center items-center"
                   onClick={handleIconClick}
                 >
-                  <MdCloudUpload size={30} color="violet" />
+                  <p className="animate-bounce text-sm text-purple-300">
+                    Upload File{" "}
+                  </p>
+                  <TbFileUpload size={50} color="violet" />
                 </div>
 
                 {/* Hidden File Input */}
@@ -181,48 +173,8 @@ const SummarizationChat = () => {
                   style={{ display: "none" }}
                   onChange={handleFileChange}
                 />
-
-                {/* Display the selected file name */}
-                {selectedFile && <p>Selected File: {selectedFile.name}</p>}
               </>
             )}
-            <div className="rounded-lg px-3 py-1 bg-gray-800 w-[90vw] lg:w-[60vw] flex shadow-sm shadow-gray-100 relative items-center overflow-hidden">
-              {loadingAnswer ? (
-                <>
-                  <div className="w-full bg-transparent h-[40px] max-h-[200px] focus:outline-none resize-none overflow-y-auto scrollbar-hidden items-center overflow-hidden translate-y-2 opacity-50">
-                    Wait for response...
-                  </div>
-                  <button
-                    disabled
-                    className="w-[40px] h-[40px] p-1 lg:hover:bg-gray-700 rounded-full opacity-40"
-                    onClick={handleSendClick}
-                  >
-                    <MdSend size={30} color="violet" />
-                  </button>
-                </>
-              ) : (
-                <>
-                  <textarea
-                    id="textarea"
-                    placeholder="Enter your question here..."
-                    className="w-full bg-transparent h-[40px] max-h-[200px] focus:outline-none resize-none overflow-y-auto scrollbar-hidden items-center overflow-hidden translate-y-2"
-                    onChange={(e) => {
-                      e.target.style.height = "auto";
-                      e.target.style.height = `${e.target.scrollHeight}px`;
-                      setInputQuestion(e.target.value);
-                    }}
-                    onKeyDown={handleTextareaKeyDown}
-                    value={inputQuestion}
-                  ></textarea>
-                  <button
-                    className="w-[40px] h-[40px] p-1 lg:hover:bg-gray-700 rounded-full "
-                    onClick={handleSendClick}
-                  >
-                    <MdSend size={30} color="violet" />
-                  </button>
-                </>
-              )}
-            </div>
           </div>
         </div>
       </div>
