@@ -7,6 +7,8 @@ import { MdMenu } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../src/AlgoAlliance_logo.png"
+import axios from "axios";
+import { useAuth } from "../context/authContext";
 // import axios from "axios";
 
 const Sidebar = () => {
@@ -15,27 +17,46 @@ const Sidebar = () => {
   const sidebarRef = useRef();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { email } = useAuth();
 
   const [chats, setChats] = useState([
-    { id: 1, title: "Chat 1", chat_type: "Type A" },
-    { id: 2, title: "Chat 2", chat_type: "Type B" },
-    { id: 3, title: "Chat 3", chat_type: "Type C" },
-    { id: 4, title: "Chat 1", chat_type: "Type A" },
-    { id: 5, title: "Chat 3", chat_type: "Type C" },
-    { id: 6, title: "Chat 1", chat_type: "Type A" },
-    { id: 7, title: "Chat 2", chat_type: "Type B" },
-    { id: 8, title: "Chat 3", chat_type: "Type C" },
-    { id: 9, title: "Chat 1", chat_type: "Type A" },
-    { id: 10, title: "Chat 2", chat_type: "Type B" },
-    { id: 11, title: "Chat 3", chat_type: "Type C" },
+    {
+      chat_type: "chatbot",
+      tab_name: "date_time_1"
+    },
+    {
+      chat_type: "summarization",
+      tab_name: "date time 2"
+    },
+    {
+      chat_type: "chat-with-doc",
+      tab_name: "date time 3"
+    },
+    {
+      chat_type: "grammar",
+      tab_name: "date time 4"
+    }
   ]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get("your-initial-api-endpoint")
-  //     .then((response) => setChats(response.data))
-  //     .catch((error) => console.error("Error fetching chats:", error));
-  // }, []);
+  useEffect(() => {
+    const fetchUserHistory = async () =>{
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/get_all_tab_history_items`, {
+          email,
+        });
+        
+        const all_tabs = response?.data?.result;
+        if(all_tabs) {
+          setChats(all_tabs)
+        }
+      } catch (error) {
+        console.error(error.message);
+        alert("Failed to fetch history in sidebar");
+      }
+    }
+
+    fetchUserHistory();
+  }, []);
 
   useEffect(() => {
     if (isTabletMid) {
@@ -48,6 +69,19 @@ const Sidebar = () => {
   useEffect(() => {
     isTabletMid && setOpen(false);
   }, [pathname]);
+
+  const handleChatClick = (chatId) => {
+    // Programmatically navigate to the chat page
+    navigate(`/chatbot/${chatId}`);
+  };
+
+  const handleNewChatClick = () => {
+    
+    navigate('/chatbot');
+
+    // Close the sidebar on mobile if it's open
+    isTabletMid && setOpen(false);
+  };
 
   const Nav_animation = isTabletMid
     ? {
@@ -81,19 +115,6 @@ const Sidebar = () => {
           },
         },
       };
-
-  const handleChatClick = (chatId) => {
-    // Programmatically navigate to the chat page
-    navigate(`/chatbot/${chatId}`);
-  };
-
-  const handleNewChatClick = () => {
-    
-    navigate('/chatbot');
-
-    // Close the sidebar on mobile if it's open
-    isTabletMid && setOpen(false);
-  };
 
   return (
     <div>
@@ -130,16 +151,16 @@ const Sidebar = () => {
           {chats.map((chat, index) => (
             <NavLink
               key={index}
-              to={`/chatbot/${chat.id}`}
+              to={`/chatbot/${chat.tab_name}`}
               className="text-white no-underline"
             >
               <div
-                className={`flex rounded-md mx-2 p-2 max-h-10 h-10 my-1 cursor-pointer hover:bg-gray-600 ${
-                  window.location.pathname === `/chatbot/${chat.id}` ? 'bg-purple-600' : "bg-gray-800"
+                className={`flex rounded-md mx-2 p-2 max-h-10 h-10 my-1 cursor-pointer lg:hover:bg-gray-600 ${
+                  window.location.pathname === `/chatbot/${chat.tab_name}` ? 'bg-purple-600 lg:hover:bg-purple-600' : "bg-gray-800"
                 }`}
-                onClick={() => handleChatClick(chat.id)}
+                onClick={() => handleChatClick(chat.tab_name)}
               >
-                <h1 className="truncate">{chat.title}</h1>
+                <h1 className="truncate">{chat.tab_name}</h1>
               </div>
             </NavLink>
           ))}

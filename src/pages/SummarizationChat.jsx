@@ -142,13 +142,11 @@ const SummarizationChat = () => {
                 >
                   <TbFileUpload size={50} color="violet" />
                 </div>
-
-                {/* Hidden File Input */}
                 <input
                   disabled
                   id="fileInput"
                   type="file"
-                  accept=".doc, .docx, .pdf" // Specify the allowed file types if needed
+                  accept=".pdf" // Specify the allowed file types if needed
                   style={{ display: "none" }}
                   onChange={handleFileChange}
                 />
@@ -164,12 +162,10 @@ const SummarizationChat = () => {
                   </p>
                   <TbFileUpload size={50} color="violet" />
                 </div>
-
-                {/* Hidden File Input */}
                 <input
                   id="fileInput"
                   type="file"
-                  accept=".doc, .docx, .pdf" // Specify the allowed file types if needed
+                  accept=".pdf" // Specify the allowed file types if needed
                   style={{ display: "none" }}
                   onChange={handleFileChange}
                 />

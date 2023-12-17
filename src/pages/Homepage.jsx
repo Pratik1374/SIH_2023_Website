@@ -3,34 +3,29 @@ import wave from "../assets/wave.svg";
 import loginImg from "../assets/login.svg";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
+import axios from 'axios';
 
 const Homepage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigateTo = useNavigate();
   const { loginUser } = useAuth();
+
   const handleLogin = async (e) => {
     try {
       e.preventDefault();
-      console.log("handleLogin function called");
-      const response = await demoAuth(username, password);
-      const userData = response.data;
-      loginUser(userData);
+      
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
+        email: username,
+        password,
+      });
+      const { token } = response.data;
+      loginUser({ token, email: username });
       navigateTo("/chatbot");
     } catch (error) {
       console.error("Authentication failed:", error.message);
+      alert("Authentication failed");
     }
-  };
-  const demoAuth = (username, password) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (username === "test" && password === "test123") {
-          resolve({ data: { username: "demo", role: "user" } });
-        } else {
-          reject(new Error("Invalid username or password"));
-        }
-      }, 1000);
-    });
   };
 
   return (
