@@ -73,10 +73,7 @@ const ChatbotChat = () => {
         prompt: question
       });
       
-      const all_tabs = response?.data?.result;
-      if(all_tabs) {
-        setChats(all_tabs)
-      }
+      
     } catch (error) {
       console.error(error.message);
       alert("Failed to fetch history in sidebar");

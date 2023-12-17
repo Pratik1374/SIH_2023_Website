@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
-
 import { MdMenu } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../src/AlgoAlliance_logo.png"
 import axios from "axios";
 import { useAuth } from "../context/authContext";
-// import axios from "axios";
+import { CgProfile } from "react-icons/cg";
 
 const Sidebar = () => {
   let isTabletMid = useMediaQuery({ query: "(max-width: 768px)" });
@@ -26,15 +25,15 @@ const Sidebar = () => {
     },
     {
       chat_type: "summarization",
-      tab_name: "date time 2"
+      tab_name: "date_time_2"
     },
     {
       chat_type: "chat-with-doc",
-      tab_name: "date time 3"
+      tab_name: "date_time_3"
     },
     {
       chat_type: "grammar",
-      tab_name: "date time 4"
+      tab_name: "date_time_4"
     }
   ]);
 
@@ -70,9 +69,9 @@ const Sidebar = () => {
     isTabletMid && setOpen(false);
   }, [pathname]);
 
-  const handleChatClick = (chatId) => {
+  const handleChatClick = (chatId,chat_type) => {
     // Programmatically navigate to the chat page
-    navigate(`/chatbot/${chatId}`);
+    navigate(`/${chat_type}/${chatId}`);
   };
 
   const handleNewChatClick = () => {
@@ -151,14 +150,14 @@ const Sidebar = () => {
           {chats.map((chat, index) => (
             <NavLink
               key={index}
-              to={`/chatbot/${chat.tab_name}`}
+              to={`/${chat.chat_type}/${chat.tab_name}`}
               className="text-white no-underline"
             >
               <div
                 className={`flex rounded-md mx-2 p-2 max-h-10 h-10 my-1 cursor-pointer lg:hover:bg-gray-600 ${
-                  window.location.pathname === `/chatbot/${chat.tab_name}` ? 'bg-purple-600 lg:hover:bg-purple-600' : "bg-gray-800"
+                  window.location.pathname === `/${chat.chat_type}/${chat.tab_name}` ? 'bg-purple-500 lg:hover:bg-purple-500' : "bg-gray-800"
                 }`}
-                onClick={() => handleChatClick(chat.tab_name)}
+                onClick={() => handleChatClick(chat.tab_name,chat.chat_type)}
               >
                 <h1 className="truncate">{chat.tab_name}</h1>
               </div>
@@ -166,14 +165,15 @@ const Sidebar = () => {
           ))}
         </div>
         <div className="flex items-center mt-auto p-1 overflow-hidden">
-          <img
+          {/* <img
             src="https://picsum.photos/200/300"
             alt=""
             className="rounded-full h-[50px] w-[50px] max-h-[50px] max-w-[50px]"
-          />
+          /> */}
+          <CgProfile size={40} color="purple" />
           <div className="overflow-hidden max-h-[50px] max-w-[140px]">
             <h1 className="ml-2 font-bold truncate">
-              Username Username Username
+              {email}myMail@mail.com
             </h1>
           </div>
         </div>
