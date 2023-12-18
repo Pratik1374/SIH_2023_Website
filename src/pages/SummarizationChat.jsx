@@ -80,7 +80,7 @@ const SummarizationChat = () => {
     <section className="flex flex-col lg:flex-row text-white">
       <Sidebar />
       <div className="w-full p-2">
-        <div className="w-full flex items-center justify-center mb-2 overflow-hidden">
+        <div className="w-full flex items-center fixed justify-center mb-2 overflow-hidden">
           <FeatureBar />
         </div>
         <div className="w-full h-[65vh] lg:h-[70vh] pl-3 lg:p-9 pt-1 lg:pt-2 lg:pl-24 overflow-auto scrollbar-thin scrollbar-thumb-gray-500">

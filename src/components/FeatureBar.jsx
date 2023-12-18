@@ -17,8 +17,8 @@ const FeatureBar = () => {
   };
 
   return (
-    <div className="text-white">
-      <div className="grid grid-cols-4 h-[60px] lg:h-20 w-[90vw] lg:w-[35rem] bg-gray-800 rounded-lg mx-auto text-center items-center px-2 ">
+    <div className="text-white mt-7">
+      <div className="grid grid-cols-4 h-[60px] lg:h-20 w-[90vw] lg:w-[35rem] bg-[#1E1E24] rounded-lg mx-auto text-center items-center px-2 space-x-3">
         <Link
           to="/chatbot"
           className={`capitalize text-sm lg:text-lg lg:hover:bg-gray-700 rounded-lg ${
