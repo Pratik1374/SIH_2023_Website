@@ -3,10 +3,14 @@ import Sidebar from "../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../context/InputContext";
 import FeatureBar from "../components/FeatureBar";
+import LandingIntro from "../components/LandingIntro";
+import AnimatedTextWord from "../components/AnimatedTextWord";
 
 const ChatbotHomepage = () => {
   const navigate = useNavigate();
   const { inputValue, setInputValue } = useInput();
+  const contents1 = ['Summarize the given article', 'Check for grammar in the document', 'Explain the document in simple language']
+  const contents2 = ['Calculate (x+y)^2, where x=2, y=10', 'Tell me a frictional story on time travel', 'Write a Essay on Black Hole']
 
   const createNewChat = () => {
     // api call to create new chat will be made, and input query will be passed to ChatbotChat component, navigate to that chat page
@@ -30,23 +34,13 @@ const ChatbotHomepage = () => {
         <div className="w-full h-[60vh] lg:h-[80vh] p-9 lg:pl-24 overflow-hidden">
           <div className="flex flex-col">
             <h1 className="text-3xl font-bold font-serif shadow-sm ">
-              Hello Learner,
+            <AnimatedTextWord text={"Hello Again,"} size="4xl"/>
             </h1>
-            <p>Ask me anything...</p>
+            <p className="text-xl">Tell me what’s on your mind.</p>
           </div>
-          <div className="flex flex-wrap mt-4 gap-4 h-[50vh] lg:h-[50vh] overflow-auto ">
-            <div className="flex flex-col p-4 items-start justify-center bg-gray-800 rounded-lg">
-              <p className="my-3 text-lg font-bold">Analyze your documents</p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
-            </div>
-            <div className="flex flex-col p-4 items-start justify-center bg-gray-800 rounded-lg">
-              <p className="my-3 text-lg font-bold">Analyze your documents</p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
-            </div>
+          <div className="flex flex-wrap mt-4 gap-4 lg:h-80 overflow-auto ">
+            <LandingIntro title={"Analyze your Documents"} contents={contents1}/>
+            <LandingIntro title={"Ask anything to Chatbot"} contents={contents2}/>
           </div>
         </div>
         <div className="absolute bottom-0 my-2 left-0 lg:left-[16rem] right-0 flex items-center justify-center p-3 -ml-11">

@@ -5,6 +5,8 @@ import { useInput } from "../context/InputContext";
 import FeatureBar from "../components/FeatureBar";
 import { BsRobot } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
+import { GrAttachment } from "react-icons/gr";
+import ChatBoxLike from "../components/ChatBoxLike";
 
 const ChatbotChat = () => {
   const [chatHistory, setChatHistory] = useState([]);
@@ -79,27 +81,32 @@ const ChatbotChat = () => {
         <div className="w-full flex items-center justify-center mb-2 overflow-hidden">
           <FeatureBar />
         </div>
-        <div className="w-full h-[65vh] lg:h-[70vh] pl-3 lg:p-9 pt-1 lg:pt-2 lg:pl-24 overflow-auto scrollbar-thin scrollbar-thumb-gray-500">
+        <div className="w-full h-full lg:h-[83vh] pl-3  lg:p-9 pt-0 lg:pt-2  overflow-auto scrollbar-thin scrollbar-thumb-gray-500  flex flex-col items-center justify-center">
           {/* Display previous questions and answers */}
           {chatHistory.map((chat, index) => (
             <div key={index}>
-              <div className="flex w-[80vw] lg:w-[60vw] flex-col p-2">
-                <div className="flex">
-                  <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center overflow-hidden">
+              <div className="flex w-[80vw] lg:w-[60vw] flex-col p-2 ">
+                <div className="flex items-center">
+                  <div className="w-8 h-8  rounded-full overflow-hidden">
                     <CgProfile size={30} color="purple" />
                   </div>
                   <h2 className="ml-[10px] font-bold">You</h2>
                 </div>
                 <p className="ml-[40px]">{chat.question}</p>
               </div>
-              <div className="flex w-[80vw] lg:w-[60vw] flex-col mt-1 mb-8 bg-[#080808] p-2 rounded-md shadow-md shadow-gray-800">
-                <div className="flex">
-                  <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center overflow-hidden">
+              <div className="flex w-[80vw] lg:w-[60vw] flex-col mt-1 mb-8 bg-[#101015] p-4 rounded-2xl">
+                <div className="flex items-center">
+                  <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
                     <BsRobot size={30} color="violet" />
                   </div>
                   <h2 className="ml-[10px] font-bold">Chatbot</h2>
                 </div>
+
                 <p className="ml-[40px] py-1">{chat.answer}</p>
+
+                <div>
+                  <ChatBoxLike />
+                </div>
               </div>
             </div>
           ))}
@@ -115,41 +122,48 @@ const ChatbotChat = () => {
                 </div>
                 <p className="ml-[40px]">{inputQuestion}</p>
               </div>
-              <div className="flex w-[80vw] lg:w-[60vw] flex-col mt-1 mb-8 bg-[#080808] p-2 rounded-md shadow-md shadow-gray-800">
-                <div className="flex">
-                  <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center overflow-hidden">
+              <div className="flex w-[80vw] lg:w-[60vw] flex-col mt-1 mb-8 bg-[#101015] p-4 rounded-2xl ">
+                <div className="flex items-center">
+                  <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
                     <BsRobot size={30} color="violet" />
                   </div>
                   <h2 className="ml-[10px] font-bold">Chatbot</h2>
                 </div>
-                <div>Loading.............................</div>
+                <div>Loading....</div>
               </div>
             </div>
           ) : (
             <></>
           )}
 
-          <div className="absolute bottom-0 my-2 left-0 lg:left-[16rem] right-0 flex items-center justify-center p-3 lg:-ml-11">
-            <div className="rounded-lg px-3 py-1 bg-gray-800 w-[90vw] lg:w-[60vw] flex shadow-sm shadow-gray-100 relative items-center overflow-hidden">
+          {/* input textarea */}
+          <div className="absolute bottom-0 my-2  lg:ml-64 left-0  right-0 flex items-center justify-center p-3 ">
+            <div className="rounded-full px-3  bg-[#1E1E24] w-[90vw] lg:w-[60vw] h-16 flex items-center justify-center space-x-2">
               {loadingAnswer ? (
                 <>
-                  <div className="w-full bg-transparent h-[40px] max-h-[200px] focus:outline-none resize-none overflow-y-auto scrollbar-hidden items-center overflow-hidden translate-y-2 opacity-50">
-                    Wait for response...
+                  <div className="w-full h-8  px-4 bg-transparent flex items-center focus:outline-none resize-none overflow-y-auto scrollbar-hidden overflow-hidden rounded-full">
+                    Wait for response..
                   </div>
                   <button
-                    disabled
-                    className="w-[40px] h-[40px] p-1 lg:hover:bg-gray-700 rounded-full opacity-40"
+                    className="w-14 h-12 flex items-center justify-center  lg:hover:bg-gray-700 rounded-full bg-[#2F2F34]"
                     onClick={handleSendClick}
                   >
-                    <MdSend size={30} color="violet" />
+                    <GrAttachment color="white" className="text-2xl" />
+                  </button>
+                  <button
+                    disabled
+                    className="w-20 h-12 flex items-center justify-center  lg:hover:bg-gray-700 rounded-full bg-[#AA69FF]"
+                    onClick={handleSendClick}
+                  >
+                    <MdSend reac color="white" className="text-2xl" />
                   </button>
                 </>
               ) : (
                 <>
-                  <textarea
+                  <input
                     id="textarea"
-                    placeholder="Enter your question here..."
-                    className="w-full bg-transparent h-[40px] max-h-[200px] focus:outline-none resize-none overflow-y-auto scrollbar-hidden items-center overflow-hidden translate-y-2"
+                    placeholder="Talk with Chat Bot"
+                    className="w-full h-8 px-4 text-xl bg-transparent flex items-center focus:outline-none resize-none overflow-y-auto scrollbar-hidden overflow-hidden rounded-full"
                     onChange={(e) => {
                       e.target.style.height = "auto";
                       e.target.style.height = `${e.target.scrollHeight}px`;
@@ -157,12 +171,18 @@ const ChatbotChat = () => {
                     }}
                     onKeyDown={handleTextareaKeyDown}
                     value={inputQuestion}
-                  ></textarea>
+                  ></input>
                   <button
-                    className="w-[40px] h-[40px] p-1 lg:hover:bg-gray-700 rounded-full "
+                    className="w-14 h-12 flex items-center justify-center  lg:hover:bg-gray-700 rounded-full bg-[#2F2F34]"
                     onClick={handleSendClick}
                   >
-                    <MdSend size={30} color="violet" />
+                    <GrAttachment color="white" className="text-2xl" />
+                  </button>
+                  <button
+                    className="w-20 h-12 flex items-center justify-center  lg:hover:bg-gray-700 rounded-full bg-[#AA69FF]"
+                    onClick={handleSendClick}
+                  >
+                    <MdSend reac color="white" className="text-2xl" />
                   </button>
                 </>
               )}

@@ -5,7 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage:{
+        'loginGraident' : "url('../assets/loginPageGradient.svg')"
+      }
+    },
+    fontFamily: {
+      popLight: ["Poppins"]
+    }
   },
   plugins: [],
 }
