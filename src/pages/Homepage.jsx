@@ -20,7 +20,9 @@ const Homepage = () => {
         password,
       });
       const { token } = response.data;
-      loginUser({ token, email: username });
+      const email = username;
+      loginUser({ token, email });
+      localStorage.setItem("email", email);
       navigateTo("/chatbot");
     } catch (error) {
       console.error("Authentication failed:", error.message);

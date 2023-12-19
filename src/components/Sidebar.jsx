@@ -16,41 +16,49 @@ const Sidebar = () => {
   const sidebarRef = useRef();
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { email } = useAuth();
+  const { user } = useAuth();
+  const email = localStorage.getItem("email");
 
-  const [chats, setChats] = useState([
-    {
-      chat_type: "chatbot",
-      tab_name: "date_time_1"
-    },
-    {
-      chat_type: "summarization",
-      tab_name: "date_time_2"
-    },
-    {
-      chat_type: "chat-with-doc",
-      tab_name: "date_time_3"
-    },
-    {
-      chat_type: "grammar",
-      tab_name: "date_time_4"
-    }
-  ]);
+  const [chats, setChats] = useState([]);
+
+  const getFormattedDateTime = (datetime) => {
+    const year = parseInt(datetime.slice(7, 11));
+    const month = parseInt(datetime.slice(11, 13)) - 1; // Month is 0-based in JavaScript
+    const day = parseInt(datetime.slice(13, 15));
+    const hour = parseInt(datetime.slice(0, 2));
+    const minute = parseInt(datetime.slice(2, 4));
+    const second = parseInt(datetime.slice(4, 6));
+    const millisecond = parseInt(datetime.slice(15)) / 1000;
+
+    // Create a new Date object with the extracted components
+    const indianDatetime = new Date(
+      Date.UTC(year, month, day, hour, minute, second, millisecond)
+    );
+
+    // Format the Date object as a well-represented string
+    const wellRepresentedDatetimeString = indianDatetime.toLocaleString(
+      "en-IN",
+      { timeZone: "Asia/Kolkata" }
+    );
+
+    return wellRepresentedDatetimeString;
+  };
 
   useEffect(() => {
     const fetchUserHistory = async () =>{
       try {
+        console.log(email)
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/get_all_tab_history_items`, {
-          email,
+          email
         });
         
         const all_tabs = response?.data?.result;
+        console.log(all_tabs)
         if(all_tabs) {
           setChats(all_tabs)
         }
       } catch (error) {
         console.error(error.message);
-        alert("Failed to fetch history in sidebar");
       }
     }
 
@@ -159,12 +167,12 @@ const Sidebar = () => {
                 }`}
                 onClick={() => handleChatClick(chat.tab_name,chat.chat_type)}
               >
-                <h1 className="truncate">{chat.tab_name}</h1>
+                <h1 className="truncate">{getFormattedDateTime(chat.tab_name)}</h1>
               </div>
             </NavLink>
           ))}
         </div>
-        <div className="flex items-center mt-auto p-1 overflow-hidden">
+        <div className="flex items-center mt-auto absolute bottom-0 left-0  overflow-hidden my-1">
           {/* <img
             src="https://picsum.photos/200/300"
             alt=""

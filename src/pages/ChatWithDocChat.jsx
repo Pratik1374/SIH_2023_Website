@@ -5,6 +5,8 @@ import { useInput } from "../context/InputContext";
 import FeatureBar from "../components/FeatureBar";
 import { BsRobot } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
+import Spinner from "../components/Spinner";
+import { TbFileUpload } from "react-icons/tb";
 
 const ChatbotChat = () => {
   const [chatHistory, setChatHistory] = useState([]);
@@ -67,19 +69,42 @@ const ChatbotChat = () => {
   };
 
   const fetchAnswerFromAPI = async (question) => {
-    try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/get_chatbot_answer`, {
-        email,
-        prompt: question
-      });
-      
-      
-    } catch (error) {
-      console.error(error.message);
-      alert("Failed to fetch history in sidebar");
-    }
+    // try {
+    //   const response = await axios.post(
+    //     `${import.meta.env.VITE_API_URL}/get_chatbot_answer`,
+    //     {
+    //       email,
+    //       prompt: question,
+    //     }
+    //   );
+    // } catch (error) {
+    //   console.error(error.message);
+    // }
 
     return "I don't know the answer yet.";
+  };
+
+  const handleFileChange = async (event) => {
+    try {
+      const file = event.target.files[0];
+      setSelectedFile(file);
+
+      // Set loading state
+      setLoadingAnswer(true);
+
+      //file uploading to api
+    } catch (error) {
+      console.error("Error fetching answer:", error);
+    } finally {
+      // Reset loading state
+      setLoadingAnswer(false);
+      // Clear the inputQuestion state
+    }
+  };
+
+  const handleIconClick = () => {
+    // Trigger the file input when the icon is clicked
+    document.getElementById("fileInput").click();
   };
 
   return (
@@ -132,13 +157,55 @@ const ChatbotChat = () => {
                   </div>
                   <h2 className="ml-[10px] font-bold">Chatbot</h2>
                 </div>
-                <div>Loading.............................</div>
+                <div>
+                  <Spinner />
+                </div>
               </div>
             </div>
           ) : (
             <></>
           )}
           <div className="absolute bottom-0 my-2 left-0 lg:left-[16rem] right-0 flex items-center justify-center p-3 lg:-ml-11">
+            {loadingAnswer ? (
+              <>
+                <div
+                  className="cursor-not-allowed pr-2 lg:-ml-10 flex flex-col justify-center items-center opacity-30"
+                  onClick={handleIconClick}
+                >
+                  <p className="animate-bounce text-sm text-purple-300">
+                    Upload File{" "}
+                  </p>
+                  <TbFileUpload size={30} color="violet" />
+                </div>
+                <input
+                  disabled
+                  id="fileInput"
+                  type="file"
+                  accept=".pdf"
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+              </>
+            ) : (
+              <>
+                <div
+                  className="cursor-pointer pr-2 lg:-ml-10 flex flex-col justify-center items-center"
+                  onClick={handleIconClick}
+                >
+                  <p className="animate-bounce text-sm text-purple-300">
+                    Upload File{" "}
+                  </p>
+                  <TbFileUpload size={30} color="violet" />
+                </div>
+                <input
+                  id="fileInput"
+                  type="file"
+                  accept=".pdf"
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+              </>
+            )}
             <div className="rounded-lg px-3 py-1 bg-gray-800 w-[90vw] lg:w-[60vw] flex shadow-sm shadow-gray-100 relative items-center overflow-hidden">
               {loadingAnswer ? (
                 <>

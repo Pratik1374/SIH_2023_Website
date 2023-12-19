@@ -5,6 +5,7 @@ import { useInput } from "../context/InputContext";
 import FeatureBar from "../components/FeatureBar";
 import { BsRobot } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
+import Spinner from "../components/Spinner";
 
 const ChatbotChat = () => {
   const [chatHistory, setChatHistory] = useState([]);
@@ -122,7 +123,7 @@ const ChatbotChat = () => {
                   </div>
                   <h2 className="ml-[10px] font-bold">Chatbot</h2>
                 </div>
-                <div>Loading.............................</div>
+                <div><Spinner/></div>
               </div>
             </div>
           ) : (
