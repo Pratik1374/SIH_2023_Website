@@ -18,8 +18,8 @@ const FeatureBar = () => {
 
   return (
     <div className="text-white">
-      <div className="grid grid-cols-3 h-[60px] lg:h-20 w-[90vw] lg:w-[25rem] bg-gray-800 rounded-lg mx-auto text-center items-center px-2 ">
-        <Link
+      <div className="grid grid-cols-1 h-[60px] lg:h-18 w-[90vw] lg:w-[15rem] bg-gray-800 rounded-lg mx-auto text-center items-center px-2 ">
+        {/* <Link
           to="/chatbot"
           className={`capitalize text-sm lg:text-lg lg:hover:bg-gray-700 rounded-lg ${
             selectedButton === "chatbot" ? "bg-purple-500 rounded-lg lg:hover:bg-purple-500" : ""
@@ -27,8 +27,8 @@ const FeatureBar = () => {
           onClick={() => handleButtonClick("chatbot")}
         >
           Chat with ChatBot
-        </Link>
-        <Link
+        </Link> */}
+        {/* <Link
           to="/summarization"
           className={`capitalize text-sm lg:text-lg lg:hover:bg-gray-700 rounded-lg ${
             selectedButton === "summarization" ? "bg-purple-500 rounded-lg lg:hover:bg-purple-500" : ""
@@ -36,7 +36,7 @@ const FeatureBar = () => {
           onClick={() => handleButtonClick("summarization")}
         >
           Summarize  document
-        </Link>
+        </Link> */}
         {/* <Link
           to="/grammar"
           className={`capitalize text-sm lg:text-lg lg:hover:bg-gray-700 rounded-lg ${

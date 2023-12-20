@@ -5,10 +5,11 @@ import { useMediaQuery } from "react-responsive";
 import { MdMenu } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import logo from "../../src/AlgoAlliance_logo.png"
+import logo from "../../src/AlgoAlliance_logo.png";
 import axios from "axios";
 import { useAuth } from "../context/authContext";
 import { CgProfile } from "react-icons/cg";
+import SidebarSpinner from "./SidebarSpinner";
 
 const Sidebar = () => {
   let isTabletMid = useMediaQuery({ query: "(max-width: 768px)" });
@@ -17,50 +18,45 @@ const Sidebar = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [chats, setChats] = useState([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
   const email = localStorage.getItem("email");
 
-  const [chats, setChats] = useState([]);
+  const getFormattedDateTime = (datetimeString) => {
+    // var datetimeString = "19335620231219668";
 
-  const getFormattedDateTime = (datetime) => {
-    const year = parseInt(datetime.slice(7, 11));
-    const month = parseInt(datetime.slice(11, 13)) - 1; // Month is 0-based in JavaScript
-    const day = parseInt(datetime.slice(13, 15));
-    const hour = parseInt(datetime.slice(0, 2));
-    const minute = parseInt(datetime.slice(2, 4));
-    const second = parseInt(datetime.slice(4, 6));
-    const millisecond = parseInt(datetime.slice(15)) / 1000;
+    // Extract individual components
+    var year = datetimeString.substring(6, 10);
+    var month = datetimeString.substring(10, 12);
+    var day = datetimeString.substring(12, 14);
+    var hours = datetimeString.substring(0, 2);
+    var minutes = datetimeString.substring(2, 4);
+    var seconds = datetimeString.substring(4, 6);
 
-    // Create a new Date object with the extracted components
-    const indianDatetime = new Date(
-      Date.UTC(year, month, day, hour, minute, second, millisecond)
-    );
-
-    // Format the Date object as a well-represented string
-    const wellRepresentedDatetimeString = indianDatetime.toLocaleString(
-      "en-IN",
-      { timeZone: "Asia/Kolkata" }
-    );
-
-    return wellRepresentedDatetimeString;
+    var formattedstring = "Date: " + day + "/" + month + "/"+ year + " Time: " + hours + ":" + minutes + ":" + seconds;
+      return formattedstring;
   };
 
   useEffect(() => {
-    const fetchUserHistory = async () =>{
+    const fetchUserHistory = async () => {
       try {
-        console.log(email)
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/get_all_tab_history_items`, {
-          email
-        });
-        
+        setLoadingHistory(true);
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/get_all_tab_history_items`,
+          {
+            email,
+          }
+        );
+
         const all_tabs = response?.data?.result;
-        console.log(all_tabs)
-        if(all_tabs) {
-          setChats(all_tabs)
+        if (all_tabs) {
+          setChats(all_tabs);
         }
+        setLoadingHistory(false);
       } catch (error) {
         console.error(error.message);
       }
-    }
+    };
 
     fetchUserHistory();
   }, []);
@@ -77,14 +73,13 @@ const Sidebar = () => {
     isTabletMid && setOpen(false);
   }, [pathname]);
 
-  const handleChatClick = (chatId,chat_type) => {
+  const handleChatClick = (chatId, chat_type) => {
     // Programmatically navigate to the chat page
     navigate(`/${chat_type}/${chatId}`);
   };
 
   const handleNewChatClick = () => {
-    
-    navigate('/chatbot');
+    navigate("/summarization");
 
     // Close the sidebar on mobile if it's open
     isTabletMid && setOpen(false);
@@ -154,35 +149,43 @@ const Sidebar = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col h-[65vh] overflow-auto scrollbar-thin scrollbar-thumb-gray-500">
-          {chats.map((chat, index) => (
-            <NavLink
-              key={index}
-              to={`/${chat.chat_type}/${chat.tab_name}`}
-              className="text-white no-underline"
-            >
-              <div
-                className={`flex rounded-md mx-2 p-2 max-h-10 h-10 my-1 cursor-pointer lg:hover:bg-gray-600 ${
-                  window.location.pathname === `/${chat.chat_type}/${chat.tab_name}` ? 'bg-purple-500 lg:hover:bg-purple-500' : "bg-gray-800"
-                }`}
-                onClick={() => handleChatClick(chat.tab_name,chat.chat_type)}
+        {loadingHistory ? (
+          <>
+            <div className="flex flex-col h-[65vh] justify-center items-center">
+              <SidebarSpinner />
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col h-[65vh] overflow-auto scrollbar-thin scrollbar-thumb-gray-500">
+            {chats.map((chat, index) => (
+              <NavLink
+                key={index}
+                to={`/${chat.chat_type}/${chat.tab_name}`}
+                className="text-white no-underline"
               >
-                <h1 className="truncate">{getFormattedDateTime(chat.tab_name)}</h1>
-              </div>
-            </NavLink>
-          ))}
-        </div>
+                <div
+                  className={`flex rounded-md mx-2 p-2 max-h-10 h-10 my-1 cursor-pointer lg:hover:bg-gray-600 ${
+                    window.location.pathname ===
+                    `/${chat.chat_type}/${chat.tab_name}`
+                      ? "bg-purple-500 lg:hover:bg-purple-500"
+                      : "bg-gray-800"
+                  }`}
+                  onClick={() => handleChatClick(chat.tab_name, chat.chat_type)}
+                >
+                  <h1 className="truncate">
+                    {getFormattedDateTime(chat.tab_name)}
+                    
+                  </h1>
+                </div>
+              </NavLink>
+            ))}
+          </div>
+        )}
+
         <div className="flex items-center mt-auto absolute bottom-0 left-0  overflow-hidden my-1">
-          {/* <img
-            src="https://picsum.photos/200/300"
-            alt=""
-            className="rounded-full h-[50px] w-[50px] max-h-[50px] max-w-[50px]"
-          /> */}
           <CgProfile size={40} color="purple" />
           <div className="overflow-hidden max-h-[50px] max-w-[140px]">
-            <h1 className="ml-2 font-bold truncate">
-              {email}myMail@mail.com
-            </h1>
+            <h1 className="ml-2 font-bold truncate">{email}myMail@mail.com</h1>
           </div>
         </div>
       </motion.div>

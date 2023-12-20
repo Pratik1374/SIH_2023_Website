@@ -23,6 +23,33 @@ const ChatbotChat = () => {
       },
     ];
     setChatHistory(dummyChatHistory);
+
+    // const fetchUserHistory = async () => {
+    //   try {
+    //     // Split the pathname into components
+    //     const pathComponents = location.pathname.split("/").filter(Boolean);
+    //     const tab_name = pathComponents[pathComponents.length - 1];
+
+    //     console.log(tab_name);
+    //     setLoadingHistory(true);
+    //     const response = await axios.post(
+    //       `${import.meta.env.VITE_API_URL}/get_specific_tab_history`,
+    //       {
+    //         email,
+    //         tab_name,
+    //         chat_type: "summarization",
+    //       }
+    //     );
+
+    //     const chatHistory = response?.data?.result;
+    //     console.log(chatHistory);
+    //     setChatHistory(chatHistory);
+    //     
+    //   } catch (error) {
+    //     console.error(error.message);
+    //   }
+    // };
+    // fetchUserHistory();
   }, []);
 
   const handleSendClick = async () => {
@@ -31,7 +58,7 @@ const ChatbotChat = () => {
       setLoadingAnswer(true);
 
       // Simulate fetching the answer (replace this with your actual logic)
-      const answer = await fetchAnswerFromAPI(inputQuestion);
+      const answer = await fetchAnswerFromAPI(inputQuestion); 
       // Update currentAnswer with the actual answer
 
       await new Promise((resolve) => {

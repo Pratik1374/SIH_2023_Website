@@ -3,20 +3,27 @@ import Sidebar from "../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../context/InputContext";
 import FeatureBar from "../components/FeatureBar";
+import axios from "axios";
 
 const ChatWithDocHomepage = () => {
   const navigate = useNavigate();
   const { inputValue, setInputValue } = useInput();
+  const email = localStorage.getItem("email");
 
-  const createNewChat = () => {
+  const createNewChat = async () => {
     // api call to create new chat will be made, and input query will be passed to ChatbotChat component, navigate to that chat page
-    const num = parseInt(Math.random() * 100);
-    console.log(num);
-
-    // setInputValue("");
-
-    // Pass the inputValue as a parameter to the next page
-    navigate(`${num}`);
+    try {
+      console.log()
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/add_user_history_first`, {
+        email,
+        chat_type : "chat-with-doc"
+      });
+      
+      const route = response?.data?.result?.tab_name;
+      navigate(`${route}`);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   return (

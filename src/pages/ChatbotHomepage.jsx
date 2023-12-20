@@ -13,7 +13,6 @@ const ChatbotHomepage = () => {
   const email = localStorage.getItem("email");
 
   const createNewChat = async () => {
-    // api call to create new chat will be made, and input query will be passed to ChatbotChat component, navigate to that chat page
     try {
       console.log()
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/add_user_history_first`, {
