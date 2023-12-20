@@ -43,16 +43,16 @@ const ChatWithDocHomepage = () => {
           </div>
           <div className="flex flex-wrap mt-4 gap-4 h-[50vh] lg:h-[50vh] overflow-auto ">
             <div className="flex flex-col p-4 items-start justify-center bg-gray-800 rounded-lg">
-              <p className="my-3 text-lg font-bold">Analyze your documents</p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
+              <p className="my-3 text-lg font-bold">Summarize the given article</p>
+              <p className="my-3">Summarize the given article</p>
+              <p className="my-3">Check for grammar in the document</p>
+              <p className="my-3">Explain the document in simple language</p>
             </div>
             <div className="flex flex-col p-4 items-start justify-center bg-gray-800 rounded-lg">
-              <p className="my-3 text-lg font-bold">Analyze your documents</p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
-              <p className="my-3">Lorem ipsum dolor sit amet consectetur </p>
+            <p className="my-3 text-lg font-bold">Ask any questions about document</p>
+              <p className="my-3">Calculate (x+y)^2, where x=2, y=10</p>
+              <p className="my-3">What is project objective in given article?</p>
+              <p className="my-3">Why arrow functions are important?</p>
             </div>
           </div>
         </div>

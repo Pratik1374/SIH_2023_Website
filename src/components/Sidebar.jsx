@@ -79,7 +79,7 @@ const Sidebar = () => {
   };
 
   const handleNewChatClick = () => {
-    navigate("/summarization");
+    navigate("/chat-with-doc");
 
     // Close the sidebar on mobile if it's open
     isTabletMid && setOpen(false);
